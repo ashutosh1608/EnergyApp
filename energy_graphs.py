@@ -194,12 +194,11 @@ def daily_consumption(generation_path, consumption_path, charge_per_unit):
         plt.gca().invert_yaxis()
         pdf.savefig()
         plt.close()
-    for month in range(1, 13):
         plt.figure(figsize=(8, 16))
         X = range(1, len(nonneg_monthly[month]) + 1)
         nosolar = (cnsmptn_monthly[month]) * charge_per_unit  # taken from grid without solar
         consumed = (nonneg_monthly[month]) * charge_per_unit  # taken from grid
-        generated = (nonpos_monthly[month]) * charge_per_unit  # surplus generated from panel
+        generated = (abs(nonpos_monthly[month])) * charge_per_unit  # surplus generated from panel
         X_axis = np.arange(len(X))
         plt.barh(X_axis - 0.2, nosolar, 0.4, label='cost of energy from grid without solar')
         plt.barh(X_axis - 0.2, consumed, 0.4, label='cost of energy taken from grid')
@@ -214,15 +213,15 @@ def daily_consumption(generation_path, consumption_path, charge_per_unit):
                      weight='bold')
             plt.text(max(w1, w3) + 10, i - 0.2, str(round(abs(w3 - w1), 2)), ha='left', va='center', color='black',
                      weight='bold')
-            plt.text(abs(w2) + 10, i + 0.2, str(round(abs(w2), 2)), ha='right', va='center')
+            plt.text(abs(w2) + 10, i + 0.2, str(round(abs(w2), 2)), ha='left', va='center')
         plt.xlim(0, max(max(consumed), max(generated)) + 1000)
         plt.ylim([-0.5 / 2 - 0.3, len(X) - 0.5 / 2 - 0.3])
         plt.gca().invert_yaxis()
         pdf.savefig()
         plt.close()
-        pdf.close()
-        pdf_bytes.seek(0)
-        return pdf_bytes
+    pdf.close()
+    pdf_bytes.seek(0)
+    return pdf_bytes
 
 # monthly_consumption('/content/Generation.xlsx', '/content/Consumption.xlsx', 0.47)
 # daily_consumption('/content/Generation.xlsx', '/content/Consumption.xlsx', 0.47)
