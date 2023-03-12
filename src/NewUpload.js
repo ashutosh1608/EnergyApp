@@ -65,14 +65,30 @@ function NewUpload() {
                     <label>Generation File: </label>
                     <div {...getDropzoneProps1()}>
                         <input {...getDropzoneInputProps1()} />
-                        <p>Drag and drop generation file here, or click to select a file</p>
+                        {isFile1Picked ?(
+                            <div>
+                                <p>Filename: {file1.name}</p>
+                                <p>Filetype: {file1.type}</p>
+                                <p>Size in bytes: {file1.size}</p>
+                            </div>
+                        ) : (
+                            <p>Drag and drop generation file here, or click to select a file</p>
+                        )}
                     </div>
                 </div>
                 <div>
                     <label>Consumption File: </label>
                     <div {...getDropzoneProps2()}>
                         <input {...getDropzoneInputProps2()} />
-                        <p>Drag and drop consumption file here, or click to select a file</p>
+                        {isFile2Picked ? (
+                            <div>
+                                <p>Filename: {file2.name}</p>
+                                <p>Filetype: {file2.type}</p>
+                                <p>Size of file in bytes: {file2.size}</p>
+                            </div>
+                        ) : (
+                            <p>Drag and drop consumption file here, or click to select a file</p>
+                        )}
                     </div>
                 </div>
                 <div>
