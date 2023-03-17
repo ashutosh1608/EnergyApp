@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Dropzone from 'react-dropzone';
 import { useDropzone } from 'react-dropzone';
+import { Box, Typography } from '@material-ui/core';
+import './MyDropzone.css';
 
 function NewUpload() {
     const [file1, setFile1] = useState(null);
@@ -18,12 +20,12 @@ function NewUpload() {
         setFile2(acceptedFiles[0]);
         setIsFile2Picked(true);
     }
-    const { getRootProps: getDropzoneProps1, getInputProps: getDropzoneInputProps1 } = useDropzone({
+    const { getRootProps: getDropzoneProps1, getInputProps: getDropzoneInputProps1, isDragActive: isDragActive1 } = useDropzone({
         onDrop: onDropFile1,
         accept: '.xlsx',
         multiple: false,
     });
-    const { getRootProps: getDropzoneProps2, getInputProps: getDropzoneInputProps2 } = useDropzone({
+    const { getRootProps: getDropzoneProps2, getInputProps: getDropzoneInputProps2, isDragActive: isDragActive2 } = useDropzone({
         onDrop: onDropFile2,
         accept: '.xlsx',
         multiple: false,
@@ -63,33 +65,43 @@ function NewUpload() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Generation File: </label>
-                    <div {...getDropzoneProps1()}>
+                    <Box
+                        {...getDropzoneProps1()}
+                        className={isDragActive1 ? 'my-dropzone-active' : 'my-dropzone'}
+                    >
                         <input {...getDropzoneInputProps1()} />
-                        {isFile1Picked ?(
-                            <div>
-                                <p>Filename: {file1.name}</p>
-                                <p>Filetype: {file1.type}</p>
-                                <p>Size in bytes: {file1.size}</p>
-                            </div>
-                        ) : (
-                            <p>Drag and drop generation file here, or click to select a file</p>
-                        )}
-                    </div>
+                        <Typography variant="h5" component="p">
+                            {isFile1Picked ?(
+                                <div>
+                                    <p>Filename: {file1.name}</p>
+                                    <p>Filetype: {file1.type}</p>
+                                    <p>Size in bytes: {file1.size}</p>
+                                </div>
+                            ) : (
+                                isDragActive1 ? "Drop the files here ..." : "Drag and drop some files here, or click to select files"
+                            )}
+                        </Typography>
+                    </Box>
                 </div>
                 <div>
                     <label>Consumption File: </label>
-                    <div {...getDropzoneProps2()}>
+                    <Box
+                        {...getDropzoneProps2()}
+                        className={isDragActive2 ? 'my-dropzone-active' : 'my-dropzone'}
+                    >
                         <input {...getDropzoneInputProps2()} />
-                        {isFile2Picked ? (
-                            <div>
-                                <p>Filename: {file2.name}</p>
-                                <p>Filetype: {file2.type}</p>
-                                <p>Size of file in bytes: {file2.size}</p>
-                            </div>
-                        ) : (
-                            <p>Drag and drop consumption file here, or click to select a file</p>
-                        )}
-                    </div>
+                        <Typography variant="h5" component="p">
+                            {isFile2Picked ? (
+                                <div>
+                                    <p>Filename: {file2.name}</p>
+                                    <p>Filetype: {file2.type}</p>
+                                    <p>Size of file in bytes: {file2.size}</p>
+                                </div>
+                            ) : (
+                                isDragActive2 ? 'Drop the files here ...' : 'Drag and drop some files here, or click to select files'
+                            )}
+                        </Typography>
+                    </Box>
                 </div>
                 <div>
                     <label>Charge per Unit: </label>
